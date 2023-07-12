@@ -128,9 +128,9 @@ Router.get('/update-post/:id', async (req, res) => {
         
         try {
             let id = req.params.id;
-            console.log("Id in Update Post: ", id)
+            // console.log("Id in Update Post: ", id)
             let user = await addPosts.findOne({ _id: id }); // Use findOne instead of find
-            console.log("User in Update Post: ", user)
+            // console.log("User in Update Post: ", user)
             let category1 = await addCategories.find();
 
             if (!user) { // Check if user is null or undefined
@@ -154,10 +154,10 @@ Router.post('/update-post', upload.single("c_image_update"), async (req, res) =>
         let id = req.body.post_id_update;
         let categoryById = await addPosts.findById(id);
         let c1 = categoryById.c_name;
-        console.log("Catgoery though Id: ", c1);
+        // console.log("Catgoery though Id: ", c1);
 
         let c2 = req.body.category_update;
-        console.log("Catgoery though Body: ", c2);
+        // console.log("Catgoery though Body: ", c2);
 
         if (c1 !== c2) {
             AddPosts(c1, 2);
@@ -198,7 +198,7 @@ Router.post('/update-post', upload.single("c_image_update"), async (req, res) =>
 Router.get('/deletePost/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("Id in Post Api: ", id);
+        // console.log("Id in Post Api: ", id);
         const user = await addPosts.findById(id);
         const c_name1 = user.c_name;
         console.log(c_name1);

@@ -24,20 +24,20 @@ Router.get('/category', async (req, res) => {
 
 Router.post('/add-category', async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const userData = new addCategories({
             c_name: req.body.c_name,
             noOfPosts: req.body.noOfPosts
         });
-        console.log("Api 2");
+        // console.log("Api 2");
         const user1 = await addCategories.findOne({ c_name: req.body.c_name });
         if (user1) {
             res.json('this Category already Added');
             return;
         }
-        console.log("Api 3");
+        // console.log("Api 3");
         await userData.save();
-        console.log("Api 4");
+        // console.log("Api 4");
         const user2 = await addCategories.findOne({ c_name: req.body.c_name });
         if (user2) {
             res.json('work');
@@ -69,8 +69,8 @@ Router.get('/categorySet/:id', async (req, res) => {
 Router.post('/category/update/:userId', async (req, res) => {
     try {
         let id = req.params.userId;
-        console.log('Id in Api: ' + id);
-        console.log(req.body);
+        // console.log('Id in Api: ' + id);
+        // console.log(req.body);
         // Update the new data in the database
         await addCategories.findByIdAndUpdate(id, {
             c_name: req.body.categoryName
@@ -87,7 +87,7 @@ Router.post('/category/update/:userId', async (req, res) => {
 Router.get('/delete/Category/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("Id in Api: ", id);
+        // console.log("Id in Api: ", id);
         const user = await addCategories.findById(id);
         if (!user) {
             res.send('Category not found');
@@ -98,7 +98,7 @@ Router.get('/delete/Category/:id', async (req, res) => {
         let category = await addCategories.findOneAndRemove({ _id: id });
         let categoryName = category ? category.c_name : null;
 
-        console.log("categoryName: ",categoryName);
+        // console.log("categoryName: ",categoryName);
         if (categoryName) {
             await addPosts.deleteMany({ c_name: categoryName });
         }

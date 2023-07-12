@@ -1,10 +1,10 @@
 const express = require('express');
 const Router = express.Router();
-const addCategories = require('./models/addCategories');
+// const addCategories = require('./models/addCategories');
 const addPosts = require('./models/addPosts');
-const addUsers = require('./models/addUser');
+// const addUsers = require('./models/addUser');
 const { headerCategories, sidebarPosts } = require("../middleWares/frontMiddleWare");
-const paginateResults = require("../middleWares/pagination");
+// const paginateResults = require("../middleWares/pagination");
 
 // Use That Middleware //
 Router.use(headerCategories);
@@ -23,32 +23,34 @@ Router.get('/single', async (req, res) => {
     res.render("single", { row: Singleuser });
 })
 
-// Router.get('/category', async (req, res) => {
-//     const categoryName = req.query.c_name;
-//     const PostofSpecificCategory = await addPosts.find({c_name:categoryName});
-//     // console.log("PostofSpecificCategory: ", PostofSpecificCategory);
-//     res.render("category", { user: PostofSpecificCategory });
-// })
+Router.get('/category', async (req, res) => {
+    const categoryName = req.query.c_name;
+    const PostofSpecificCategory = await addPosts.find({c_name:categoryName});
+    // console.log("PostofSpecificCategory: ", PostofSpecificCategory);
+    res.render("category", { user: PostofSpecificCategory });
+})
 
 
-// usko modify kr do is sey
-Router.get("/category", async (req, res) => {
-  const c_name =req.query.c_name;
-  const currentPage = parseInt(req.query.page) || 1; // Get the current page from the query parameters
-  const pageSize = 10; // Define the number of records per page
-
-  try {
-    const { results, totalPages } = await paginateResults(addPosts, { c_name:c_name }, currentPage, pageSize);
-
-    res.render('category', {
-      result: results,
-      totalPages: totalPages,
-      currentPage: currentPage
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred while retrieving the records.' });
-  }
-});
+// // usko modify kr do is sey
+// Router.get("/category", async (req, res) => {
+//   const c_name =req.query.c_name;
+//   const currentPage = parseInt(req.query.page) || 1; // Get the current page from the query parameters
+//   const pageSize = 10; // Define the number of records per pagec 
+//   console.log("currentPage: " , currentPage);
+//   console.log("pageSize: " , pageSize);
+//   try {
+//     const { results, totalPages } = await paginateResults(addPosts, { c_name:c_name }, currentPage, pageSize);
+//     console.log("results: " , results);
+//     console.log("totalPages: " , totalPages);
+//     // res.render('category', {
+//     //   user: results,
+//     //   totalPages: totalPages,
+//     //   currentPage: currentPage
+//     // });
+//   } catch (error) {
+//     res.status(500).json({ error: 'An error occurred while retrieving the records.' });
+//   }
+// });
 
 Router.get('/author', async (req, res) => {
     const emailOfSpecificPost = req.query.email;

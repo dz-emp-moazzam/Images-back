@@ -17,7 +17,7 @@ Router.get('/login', (req, res) => {
         }
     }
 
-    console.log("User is not logged")
+    console.log("First time in login page")
     res.render('adminFolder/index');
 });
 
@@ -66,22 +66,22 @@ Router.get('/dashboard/users', async (req, res) => {
 Router.post('/dashboard/add-user', async (req, res) => {
     if (req.session.userRole) {
         try {
-            console.log(req.body);
+            // console.log(req.body);
             const userData = new addUsers({
                 email: req.body.email,
                 username: req.body.username,
                 password: req.body.password,
                 role: req.body.role,
             });
-            console.log("Api 2");
+            // console.log("Api 2");
             const user1 = await addUsers.findOne({ email: req.body.email });
             if (user1) {
                 res.send('This user with this email is already inserted.');
                 return;
             }
-            console.log("Api 3");
+            // console.log("Api 3");
             await userData.save();
-            console.log("Api 4");
+            // console.log("Api 4");
             const user2 = await addUsers.findOne({ email: req.body.email });
             if (user2) {
                 res.json('work');
@@ -120,7 +120,7 @@ Router.post('/login', async (req, res) => {
         const userRole = (role === 0) ? "editor" : "admin";
         req.session.userEmail = email;
         req.session.userRole = userRole;
-        console.log("req.session.userRole",req.session.userRole);
+        // console.log("req.session.userRole",req.session.userRole);
         res.json({ status: 'success' , userRoleObject: req.session.userRole});
     } catch (error) {
         console.log('Catch Block');
@@ -179,8 +179,8 @@ Router.post('/dashboard/api/user/:id', async (req, res) => {
     if (req.session.userRole) {
         try {
             let id = req.params.id;
-            console.log('Id in Api: ' + id);
-            console.log(req.body);
+            // console.log('Id in Api: ' + id);
+            // console.log(req.body);
             // Update the new data in the database
             await addUsers.findByIdAndUpdate(id, {
                 email: req.body.email1,
