@@ -1,0 +1,395 @@
+<!-- Footer -->
+<div id="footer" style="font-size: 16px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <span>&copy; 2023 News | Powered by Meta Solution</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Footer -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#dt1').DataTable();
+  } );
+</script>
+<script>
+
+  document.getElementById('add-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Get the form input values
+    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('role').value;
+
+    // Create an object with the form data
+    const formData = {
+      email: email,
+      username: username,
+      password: password,
+      role: role
+    };
+
+    console.log(formData);
+
+    // Perform the API request
+    fetch('/dashboard/add-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        console.log('User added successfully 1');
+        return response.json();
+      })
+      .then(data => {
+        if (data === 'work') {
+          // User added successfully
+          console.log('User added successfully 2');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'User added successfully!'
+          }).then(() => {
+            window.location.href = '/dashboard/users';
+          });
+        } else {
+          // Failed to add user
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add user. Please try again.'
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });
+
+</script>
+<script>
+  document.getElementById('add-category-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Get the form input values
+    const c_name = document.getElementById('c_name').value;
+
+    console.log(c_name);
+
+    // Create an object with the form data
+    const formData = {
+      c_name: c_name,
+      noOfPosts: 0
+    };
+
+    console.log(formData);
+
+    // Perform the API request
+    fetch('/dashboard/add-category', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        console.log('Category added successfully 1');
+        return response.json();
+      })
+      .then(data => {
+        if (data === 'work') {
+          // Category added successfully
+          console.log('Category added successfully 2');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Category added successfully!'
+          }).then(() => {
+            window.location.href = '/dashboard/category';
+          });
+        } else {
+          // Failed to add category
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add Category. Please try again.'
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });
+</script>
+
+<script>
+
+  // Function to handle deleting a user
+  function deletePost(id) {
+    Swal.fire({
+      title: 'Are you sure you want to delete the Post?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+      cancelButtonText: 'Cancel',
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: 'btn btn-danger mx-2',
+        cancelButton: 'btn btn-secondary mx-2'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = '/dashboard/deletePost/' + id;
+      }
+    });
+  }
+  
+</script>
+
+
+<script>
+
+  // Function to handle deleting a user
+  function deleteData(id) {
+  Swal.fire({
+    title: 'Are you sure you want to delete the User?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc3545',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+    cancelButtonText: 'Cancel',
+    buttonsStyling: false,
+    customClass: {
+      confirmButton: 'btn btn-danger mx-2',
+      cancelButton: 'btn btn-secondary mx-2'
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location = '/dashboard/api/delete/' + id;
+    }
+  });
+}
+
+
+  
+</script>
+
+<script>
+  // Function to set data on the pop-up form
+  function setCategory(id) {
+    if (id === "") {
+      console.log("There is no ID");
+    } else {
+      fetch(`/dashboard/categorySet/${id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Request failed');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Set the values in the form
+          document.getElementById('categoryId').value = id;
+          const testId = document.getElementById('categoryId').value;
+          console.log(testId);
+          console.log(id);
+          document.getElementById('categoryName').value = data.c_name;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  }
+</script>
+
+<script>
+  // Function to update the data of the user
+  function updateCategory(userId) {
+    console.log("Updating data in updateCategory: " , userId);
+
+    // Get the updated data from the form
+    const categoryName = document.getElementById('categoryName').value;
+    console.log("categoryName" , categoryName);
+    
+    // Create form data object to send the updated data
+    const formData = {
+      categoryName: categoryName
+    };
+
+    console.log(formData)
+
+    // Convert the formData object to JSON
+    const jsonData = JSON.stringify(formData);
+
+    // Make a POST request to the API endpoint
+    fetch(`/dashboard/category/update/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        // Close the edit modal
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Category updated successfully!',
+        }).then(() => {
+          document.getElementById('editModalCategory').classList.remove('show');
+          document.getElementById('editModalCategory').style.display = 'none';
+          document.body.classList.remove('modal-open');
+          document.body.style.paddingRight = '0px';
+          document.querySelector('.modal-backdrop').remove();
+
+          window.location.href = "/dashboard/category";
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        // Display error message using SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update category. Please try again.'
+        });
+      });
+  }
+</script>
+
+<script>
+  // Function to handle deleting a user
+  function deleteCategory(id) {
+    console.log("Id in method: " + id);
+    Swal.fire({
+      title: 'Are you sure you want to delete the Category?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+      cancelButtonText: 'Cancel',
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: 'btn btn-danger mx-2',
+        cancelButton: 'btn btn-secondary mx-2'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = '/dashboard/delete/Category/' + id;
+      }
+    });
+  }
+</script>
+
+<script>
+  // Function to set data on the pop-up form
+  function setData(id) {
+    if (id === "") {
+      console.log("There is no ID");
+    } else {
+      fetch(`/dashboard/api/user/${id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Request failed');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Set the values in the form
+          document.getElementById('id1').value = id;
+          console.log(id);
+          document.getElementById('email1').value = data.email;
+          document.getElementById('username1').value = data.username;
+          document.getElementById('role1').value = data.role;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  }
+</script>
+
+<script>
+  // Function to update the data of the user
+  function updateData(userId) {
+    console.log("Updating data in updateData: " + userId);
+
+    // Get the updated data from the form
+    const email = document.getElementById('email1').value;
+    const username = document.getElementById('username1').value;
+    const role = document.getElementById('role1').value;
+
+    // Create form data object to send the updated data
+    const formData = {
+      email1: email,
+      username1: username,
+      role1: role,
+    };
+
+    // Convert the formData object to JSON
+    const jsonData = JSON.stringify(formData);
+
+    // Make a POST request to the API endpoint
+    fetch(`/dashboard/api/user/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        // Close the edit modal
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'User updated successfully!',
+        }).then(() => {
+          document.getElementById('editModal').classList.remove('show');
+          document.getElementById('editModal').style.display = 'none';
+          document.body.classList.remove('modal-open');
+          document.body.style.paddingRight = '0px';
+          document.querySelector('.modal-backdrop').remove();
+
+          window.location.href = "/dashboard/users";
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        // Display error message using SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update user. Please try again.',
+        });
+      });
+  }
+</script>
+</body>
+</html>

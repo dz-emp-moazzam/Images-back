@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ADMIN | Login</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <div id="wrapper-admin" class="body-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-4 col-md-4">
+                    <img class="logo" src="images/news.jpg">
+                    <h3 class="heading">Log in</h3>
+                    <!-- Form Start -->
+                    <form action="#" method="POST" id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Username</label>
+                            <input type="text" name="email" id="email" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder=""
+                                required>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="submit" />
+                        <!-- <input type="hidden" name="c_role" id="c_role" value="<%= userRole %>" /> -->
+
+                    </form>
+                    <!-- Form End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+    <script>
+
+        // const userRole = document.getElementById("c_role").value;
+        // console.log("User Role: " + userRole);
+
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const formData = {
+                email: email,
+                password: password
+            };
+
+            console.log(formData);
+            // Perform the API request
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Request failed');
+                    }
+                    return response.json(); // Parse response as JSON
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'User login successful!',
+                            customClass: {
+                                popup: 'swal2-popup swal2-large', // Add custom inline styles for the popup
+                                content: 'swal2-content swal2-large' // Add custom inline styles for the content
+                            }
+                        }).then(() => {
+                            if (data.userRoleObject === 'editor') {
+                                console.log("Editor userRole: ", data.userRoleObject);
+                                window.location.href = '/dashboard/post';
+                            } else if (data.userRoleObject === 'admin') {
+                                console.log("Admin userRole: ", data.userRoleObject);
+                                window.location.href = '/dashboard/users';
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid email or password!',
+                            customClass: {
+                                popup: 'swal2-popup swal2-large', // Add custom inline styles for the popup
+                                content: 'swal2-content swal2-large' // Add custom inline styles for the content
+                            }
+                        });
+                    }
+                })
+                .catch(() => {
+                    console.log('Error');
+                });
+        });
+    </script>
+</body>
+
+</html>

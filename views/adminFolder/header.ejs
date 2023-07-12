@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Title -->
+    <title>ADMIN Panel</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div id="header-admin" style="background-color: #1E90FF;">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- LOGO -->
+                <div class="col-md-2">
+                    <a href=""><img class="logo mt-3 mb-3" src="/images/news.jpg"
+                            style="width: 170px;height: 50px;"></a>
+                </div>
+                <!-- /LOGO -->
+                <!-- LOGO-Out -->
+                <div class="col-md-offset-9 col-md-1" style="margin-left: 150px;">
+                    <div class="row">
+                        <div class="col-1" style="margin-left: 800px;color: white;">
+                            <a href="/dashboard/logout" style="color: white;text-decoration: none;"
+                                class="admin-logout">logout</a>
+                            <p style="margin-top: -10px;color: white;font-size: 13px;">
+                                <%= userEmail %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /LOGO-Out -->
+            </div>
+        </div>
+    </div>
+    <!-- /HEADER -->
+    <!-- Menu Bar -->
+    <div id="admin-menubar">
+        <div class="container" style="padding-top: 10px;padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <% if(userRole != "editor"){ %>
+                            <div class="col-1">
+                                <a href="/dashboard/post" style="text-decoration: none;font-size: 18px;">Post</a>
+                            </div>
+                            <div class="col-2">
+                                <a href="/dashboard/category"
+                                    style="text-decoration: none;font-size: 18px;margin-left: -15px;">Category</a>
+                            </div>
+                            <div class="col-1">
+                                <a href="/dashboard/users"
+                                    style="text-decoration: none;font-size: 18px;margin-left: -105px;">Users</a>
+                            </div>
+                            <% }else{ %>
+                                <div class="col-1">
+                                    <a href="/dashboard/post" style="text-decoration: none;font-size: 18px;">Post</a>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Menu Bar -->
+</body>
+
+</html>
